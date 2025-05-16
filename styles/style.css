@@ -1,0 +1,49 @@
+:root {
+    --color-light-gray: #F5F5F5;
+    --color-dark-gray: #212121;
+    --color-red: #FF5252;
+    --color-light-blue: #00BCD4; 
+    --color-blue: #3F51B5 ; 
+}
+
+body {
+    background-color: #fff ;
+    color: var(--color-dark-gray); 
+    font-family: "Roboto", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    margin: 0;
+    padding: 0;
+}
+
+.errorColor {
+    color: var(--color-red);
+}
+.succifulColor {
+    color: var(--color-light-blue);
+}
+.text-center {
+    text-align: center;
+}
+
+.container {
+    background-color: var(--color-light-gray);
+    padding: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    border-radius: 15px;
+}
+
+.no_user {
+    max-width: 350px;
+    margin: 0 auto;
+    border-radius: 500px;
+    font-size: 30px;
+
+}
+
+.no_user input {
+        margin-bottom: 10px;
+        font-size: 26px;
+        max-width: 89%;
+    }
