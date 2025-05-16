@@ -2,6 +2,25 @@
 	function debug($msg) {
 		echo "<p>". $msg ."</p>";
 	}
+	function dump($arr) {
+		echo "<pre>";
+		var_dump($arr);
+		echo "</pre>";
+	}
+
+	function validateLogin($login) {
+		// Проверка на разрешённые символы (a-z, A-Z, 0-9)
+		if (!preg_match('/^[a-zA-Z0-9]+$/', $login)) {
+			return "Логин должен состоять только из латиницы или цифр";
+		} else {
+			// Проверка длины (3-50 символов)
+			if (strlen($login) < 3 || strlen($login) > 50) {
+				return "Слишком короткий логин"; 
+			} 
+		}
+
+		return "";
+	}
 
 	$dbh = new PDO('mysql:host=localhost;dbname=nomnomcalc', "root", "", array(PDO::ATTR_PERSISTENT => true));
 
@@ -18,15 +37,7 @@
 
 		//валидация логина
 		if($validMsg == "") {
-			// Проверка на разрешённые символы (a-z, A-Z, 0-9)
-			if (!preg_match('/^[a-zA-Z0-9]+$/', $login)) {
-				$validMsg = "Логин должен состоять только из латиницы или цифр";
-			} else {
-				// Проверка длины (3-50 символов)
-				if (strlen($login) < 3 || strlen($login) > 50) {
-					$validMsg = "Слишком короткий логин"; 
-				} 
-			}
+			$validMsg = validateLogin($login); 
 		}
 
 		//валидация пароля
@@ -57,7 +68,7 @@
 						':name' => $name,
 						':login' => $login,
 						':pass' => password_hash($pass1, PASSWORD_DEFAULT)
-					]);//password_verify(user, db)
+					]);
 						$resultMsg = "Регистрация успеша!<br>Вы можете войти по форме ниже.";
 				} catch(PDOException $e) {
 					$validMsg = "Ошибка: " . $e->getMessage();
@@ -74,7 +85,25 @@
 	}
 
 	if(isset($_POST["signIn"])) {
-		echo "signIn";
+		$log = $_POST["login"];
+		$pass = $_POST["pass"];
+		$validMsgLogin = "";		
+		$stmtGetUser = $dbh->prepare(
+			"SELECT id, name, login, password FROM users WHERE login = :login"
+		);
+		$stmtGetUser->execute([':login' => $log]);
+		$user = $stmtGetUser->fetch(PDO::FETCH_ASSOC);
+		if($user != false) {
+			if(password_verify($pass, $user['password']) == true) {
+				setcookie("user_id", $user["id"], time() + 60 * 60 * 24 * 354);//1 год
+				setcookie("user_name", $user["name"], time() + 60 * 60 * 24 * 354);//1 год
+			} else {
+				$validMsgLogin = "Неправильный логин или пароль";
+			}
+		} else {
+			$validMsgLogin = "Неправильный логин или пароль";
+		}
+		
 	}
 ?>
 <!DOCTYPE html>
@@ -92,7 +121,7 @@
 </head>
 <body>
 	<?php 
-		if(isset($_COOKIE["user"]) == true) {
+		if(isset($_COOKIE["user_id"]) == true) {
 			echo "пользователь есть";
 		} else {
 			include("html/no_user.html");
