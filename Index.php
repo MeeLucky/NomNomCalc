@@ -29,6 +29,8 @@
 	<link rel="stylesheet" type="text/css" href="styles/header.css">
 </head>
 <body>
+<script src="scripts/script.js"></script>
+
 	<?php 
 		if(isset($_COOKIE["user_id"]) == true) {
 			include("html/header.html");
@@ -55,6 +57,5 @@
 			include("html/no_user.html");
 		}
 	?>
-	<script src="scripts/script.js"></script>
 </body>
 </html>

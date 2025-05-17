@@ -25,6 +25,12 @@ body {
 .text-center {
     text-align: center;
 }
+.text-left {
+    text-align: left;
+}
+.text-right {
+    text-align: right;
+}
 
 .container {
     background-color: var(--color-light-gray);
@@ -46,6 +52,37 @@ body {
         margin-bottom: 10px;
         font-size: 26px;
         max-width: 89%;
-    }
+}
 
-    
+.journal {
+    margin: 20px auto;
+    max-width: 420px; /* можно настроить по желанию */
+}
+
+.line {
+    width: 100%;
+    margin: 0 auto;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between; /* распределяет блоки по краям */
+    align-items: center; /* выравнивание по вертикали */
+    box-sizing: border-box;
+}
+
+.left-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.right-block {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.button-add {
+    font-size: 18px;
+    margin-left: 5px;
+    cursor: pointer;
+}
